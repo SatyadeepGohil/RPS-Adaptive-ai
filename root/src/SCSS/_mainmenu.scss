@@ -1,0 +1,39 @@
+#main_menu__background {
+    width: 100vw;
+    height: 100vh;
+    background-color: gray;
+}
+
+#main_menu__button_container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background-color: gold;
+    width: 400px;
+    height: 300px;
+
+    button {
+        font-size: 2rem;
+        width: 250px;
+        height: auto;
+        border-radius: 10px;
+        transition: transform 0.3s ease-in-out;
+
+        &:hover {
+            filter: brightness(0.9);
+            transform: translateY(-2px);
+        }
+
+        &:active {
+            background-color: black;
+            color: white;
+            transform: translateY(4px);
+        }
+    }
+}
