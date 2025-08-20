@@ -1,0 +1,36 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+function ClassicMode () {
+    let navigate = useNavigate();
+
+    useEffect(() => {
+        function handleKeydown (e: { key: string; }) {
+            if (e.key === 'Escape') {
+                navigate('/');
+            }
+        }
+
+        document.addEventListener('keydown', handleKeydown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeydown);
+        }
+    }, [navigate]);
+
+
+    return (
+        <div id="classic_mode_container">
+            <nav id="classic_mode_nav">
+                <button onClick={() => navigate('/')}>Main Menu</button>
+            </nav>
+            <div id="opponent_card_container"></div>
+            <hr />
+            <div id="selection_card_container">
+                <div className="card"></div>
+            </div>
+        </div>
+    )
+}
+
+export default ClassicMode;

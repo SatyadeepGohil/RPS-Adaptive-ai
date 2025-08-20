@@ -1,8 +1,18 @@
+import { useNavigate } from "react-router-dom";
+
+
 const MainMenu = () => {
+    
+    let navigate = useNavigate();
+    
+    function routeToClassicMode () {
+        navigate('/classic-mode');
+    }
+
     return (
         <div id="main_menu__background">
             <div id="main_menu__button_container">
-                <button id="main_menu__start_btn">Start</button>
+                <button id="main_menu__start_btn" onClick={routeToClassicMode}>Start</button>
                 <button id="main_menu__load_save_btn">Load Save</button>
                 <button id="main_menu__quit_btn">Quit</button>
             </div>

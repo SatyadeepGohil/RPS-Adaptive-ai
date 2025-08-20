@@ -1,1 +1,1 @@
-@import"./_mainmenu.scss";*{margin:0;padding:0;box-sizing:border-box}body{width:100%;height:100vh;display:flex;justify-content:center;align-items:center}/*# sourceMappingURL=index.css.map */
+@import"./_mainmenu.scss";@import"./_classicmode.scss";*{margin:0;padding:0;box-sizing:border-box}body{width:100%;height:100%}/*# sourceMappingURL=index.css.map */
