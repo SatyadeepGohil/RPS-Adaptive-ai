@@ -22,11 +22,18 @@ function ClassicMode () {
     return (
         <div id="classic_mode_container">
             <nav id="classic_mode_nav">
-                <button onClick={() => navigate('/')}>Main Menu</button>
+                <button onClick={() => navigate('/')}>Back to main menu</button>
             </nav>
-            <div id="opponent_card_container"></div>
+            <div id="opponent_card_container">
+                <div className="flipper">
+                    <div className="front">Front</div>
+                    <div className="back">Back</div>
+                </div>
+            </div>
             <hr />
             <div id="selection_card_container">
+                <div className="card"></div>
+                <div className="card"></div>
                 <div className="card"></div>
             </div>
         </div>

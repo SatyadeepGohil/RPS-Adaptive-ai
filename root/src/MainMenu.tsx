@@ -14,6 +14,7 @@ const MainMenu = () => {
             <div id="main_menu__button_container">
                 <button id="main_menu__start_btn" onClick={routeToClassicMode}>Start</button>
                 <button id="main_menu__load_save_btn">Load Save</button>
+                <button>Settings</button>
                 <button id="main_menu__quit_btn">Quit</button>
             </div>
         </div>
