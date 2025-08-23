@@ -1,0 +1,89 @@
+#classic_mode_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    background-color: aqua;
+
+    hr {
+        width: 100%;
+        border: none;
+        outline: 1px solid black;
+    }
+}
+
+#classic_mode_nav {
+    margin: 5px;
+    padding: 5px;
+    background-color: crimson;
+
+    button {
+        padding: 5px;
+        font-size: 1.5rem;
+    }
+}
+
+#opponent_card_container {
+    width: 275px;
+    height: 350px;
+    border: 1px solid black;
+    perspective: 1000px;
+
+    .flipper {
+        width: 100%;
+        height: 100%;
+        position: relative;
+
+        transition: transform 0.5s ease;
+        transform-style: preserve-3d;
+    }
+
+    .front,
+    .back {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+    }
+
+    .front {
+        background-color: coral;
+        transform: rotateY(180deg);
+    }
+
+    .back {
+        background-color: brown;
+        /* transform: rotateY(180deg); */
+    }
+
+    .active {
+        transform: rotateY(-180deg);
+    }
+
+}
+
+#selection_card_container {
+    width: 80%;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+    background-color: crimson;
+    padding: 20px;
+
+    .card {
+        background-color: gold;
+        width: 275px;
+        height: 350px;
+        transition: transform 0.5s ease;
+
+        &:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.2);
+        }
+    }
+}
