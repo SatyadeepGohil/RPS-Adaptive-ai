@@ -60,7 +60,7 @@
         /* transform: rotateY(180deg); */
     }
 
-    &:hover .flipper {
+    .active {
         transform: rotateY(-180deg);
     }
 
