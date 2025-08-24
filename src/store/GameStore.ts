@@ -1,12 +1,13 @@
-import { create } from "zustand";
-import type { AttackType, GameData } from "../types/GameType";
+import { createStore } from "zustand/vanilla";
+import type { AttackType, DifficultyMode, GameData } from "../types/GameType";
 
 export type GameStore = GameData & {
     setUserAttack: (attack: AttackType) => void;
     setOpponentAttack: (attack: AttackType) => void;
+    setModeType: (mode: DifficultyMode) => void;
 }
 
-export const userGameStore = create<GameStore>((set) => ({
+export const userGameStore = createStore<GameStore>((set) => ({
     userAttackType: 'none',
     opponentAttackType: 'none',
     modeType: 'easy',
@@ -23,4 +24,9 @@ export const userGameStore = create<GameStore>((set) => ({
             opponentAttackType: attack,
             attackHistory: [...state.attackHistory, attack],
         })),
+    
+    setModeType: (mode) => 
+        set(() => ({
+            modeType: mode,
+        }))
 }))

@@ -1,26 +1,17 @@
-import type { AttackType, DifficultyMode, GameData } from "./types/GameType";
 import { userGameStore } from "./store/GameStore.js";
-
-class Game implements GameData {
-    userAttackType: AttackType;
-    opponentAttackType: AttackType;
-    modeType: DifficultyMode;
-    attackHistory: AttackType[];
-
-    constructor () {
+class Game {
+    constructor() {
         this.userAttackType = 'none';
         this.opponentAttackType = 'none';
         this.modeType = 'easy';
         this.attackHistory = [];
     }
-
-    processUserAttack(userAttack: AttackType) {
+    processUserAttack(userAttack) {
         this.userAttackType = userAttack;
         this.gameModeSelection();
     }
-
-    gameModeSelection (mode = this.modeType) {
-        switch(mode) {
+    gameModeSelection(mode = this.modeType) {
+        switch (mode) {
             case 'easy':
                 this.randomAttack();
                 break;
@@ -28,14 +19,12 @@ class Game implements GameData {
                 this.adaptiveAttack();
         }
     }
-
-    randomAttack () {
-        if (this.userAttackType === 'none') return;
-
+    randomAttack() {
+        if (this.userAttackType === 'none')
+            return;
         const randomInt = Math.floor(Math.random() * 3) + 1; // Adding 1 to not get 0
-        let opponentAttack: AttackType = 'rock';
-
-        switch(randomInt) {
+        let opponentAttack = 'rock';
+        switch (randomInt) {
             case 1:
                 opponentAttack = 'rock';
                 break;
@@ -46,16 +35,12 @@ class Game implements GameData {
                 opponentAttack = 'scissors';
                 break;
         }
-
         const { setOpponentAttack } = userGameStore.getState();
         this.opponentAttackType = opponentAttack;
-
         setOpponentAttack(opponentAttack);
     }
-
     adaptiveAttack() {
-
     }
 }
-
 export default Game;
+//# sourceMappingURL=GameEngine.js.map
