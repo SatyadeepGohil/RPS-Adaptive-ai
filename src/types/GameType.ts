@@ -6,6 +6,5 @@ export type DifficultyMode = 'easy' | 'medium' | 'hard' | 'extreme';
 export interface GameData {
     userAttackType: AttackType;
     opponentAttackType: AttackType;
-    modeType: DifficultyMode;
-    attackHistory: AttackType[];
+    difficultModeType: DifficultyMode;
 }

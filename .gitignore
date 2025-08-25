@@ -1,0 +1,29 @@
+# Node modules
+node_modules/
+
+# TypeScript compiled output
+dist/
+*.js.map
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# VSCode / IDE
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary / cache files
+.cache/
+*.tmp
+*.swp
+
+# Optional: build tools or editor temp folders
+.sass-cache/

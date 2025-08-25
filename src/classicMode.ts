@@ -3,7 +3,7 @@ import { userGameStore } from './store/GameStore.js';
 import { AttackType, DifficultyMode } from './types/GameType';
 
 let game = new Game();
-let { setUserAttack, setModeType} = userGameStore.getState();
+let { setUserAttack, setDifficultyModeType} = userGameStore.getState();
 let modeBtn = document.getElementById('difficulty_mode_btn') as HTMLElement;
 let mode = ['easy', 'medium', 'hard', 'extreme'];
 // -1 here because 0 isn't suitable in this case. if index is zero then medium is default mode.
@@ -22,31 +22,48 @@ function moveSelection (move: string) {
 function showOpponentAttack () {
 
     const { opponentAttackType } = userGameStore.getState();
-    
     front.innerHTML = opponentAttackType;
 
+    disableCards();
     flipper.classList.add('active');
 
     setTimeout(() => {
         flipper.classList.remove('active');
+        enableCards();
     }, 2000)
 }
 
-for (let card of cards) {
-    card.addEventListener('click', () => {
-        const move = (card as HTMLElement).dataset.attack!;
-        console.log(move);
-        moveSelection(move);
+function enableCards() {
+    for (let card of cards) {
+        card.classList.remove('disable');
+        card.classList.add('enable')
+        card.addEventListener('click',handleCardClick);
+    }
+}
 
-        setTimeout(showOpponentAttack, 100);
-    })
+enableCards();
+
+function disableCards() {
+    for (let card of cards) {
+        card.classList.remove('enable');
+        card.classList.add('disable');
+        card.removeEventListener('click', handleCardClick);
+    }
+}
+
+function handleCardClick (event: Event) {
+    const card = event.currentTarget as HTMLElement;
+    const move = card.dataset.attack!;
+    moveSelection(move);
+
+    setTimeout(showOpponentAttack, 100);
 }
 
 
 function toggleMode () {
     index = (index + 1) % mode.length;
     let modeString = mode[index];
-    setModeType(modeString as DifficultyMode);
+    setDifficultyModeType(modeString as DifficultyMode);
     modeBtn.innerText = `Difficulty Mode: ${mode[index]}`;
 }
 

@@ -15,11 +15,17 @@
 #classic_mode_nav {
     margin: 5px;
     padding: 5px;
-    background-color: crimson;
 
     button {
-        padding: 5px;
-        font-size: 1.5rem;
+        padding: 8px;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 3px;
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
     }
 }
 
@@ -71,7 +77,7 @@
     width: 80%;
     display: flex;
     justify-content: space-evenly;
-    gap: 10px;
+    gap: 15px;
     background-color: crimson;
     padding: 20px;
 
@@ -81,9 +87,14 @@
         height: 350px;
         transition: transform 0.5s ease;
 
-        &:hover {
+        &.enable:hover {
             transform: translateY(-3px);
             filter: brightness(1.2);
+        }
+
+        &.disable {
+            pointer-events: none;
+            filter: grayscale(1) brightness(1);
         }
     }
 }

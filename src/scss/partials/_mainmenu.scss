@@ -1,7 +1,6 @@
 #main_menu__background {
     width: 100vw;
     height: 100vh;
-    background-color: gray;
 }
 
 #main_menu__button_container {
@@ -17,6 +16,7 @@
     background-color: gold;
     width: 400px;
     height: 300px;
+    border-radius: 10px;
 
     button {
         font-size: 2rem;
@@ -26,13 +26,13 @@
         transition: transform 0.3s ease-in-out;
 
         &:hover {
-            filter: brightness(0.9);
+            filter: brightness(0.8);
             transform: translateY(-2px);
         }
 
         &:active {
-            background-color: black;
-            color: white;
+            background-color: white;
+            color:  black;
             transform: translateY(4px);
         }
     }
