@@ -1,27 +1,33 @@
-import type { AttackType, DifficultyMode, GameData } from "./types/GameType";
-import { userGameStore } from "./store/GameStore.js";
+import type { AttackType, DifficultyMode, RoundType, Score, GameData } from "./types/GameType";
+import { useGameStore } from "./store/GameStore.js";
 
 class Game implements GameData {
     userAttackType: AttackType;
     opponentAttackType: AttackType;
     difficultModeType: DifficultyMode;
+    roundType: RoundType;
+    currentScore: Score;
 
     constructor () {
         this.userAttackType = 'none';
         this.opponentAttackType = 'none';
         this.difficultModeType = 'easy';
+        this.roundType = 'infinite';
+        this.currentScore = { user: 0, opponent: 0};
     }
 
     processUserAttack(userAttack: AttackType) {
         this.userAttackType = userAttack;
-        console.log(userGameStore.getState().attackHistory)
-        console.log("History Length",userGameStore.getState().attackHistory.length);
+        console.log(useGameStore.getState().attackHistory)
+        console.log("History Length",useGameStore.getState().attackHistory.length);
 
         this.gameModeSelection();
+
+        this.processWinner();
     }
 
     gameModeSelection () {
-        const { difficultModeType } = userGameStore.getState();
+        const { difficultModeType } = useGameStore.getState();
         switch(difficultModeType) {
             case 'easy':
                 this.randomAttack();
@@ -39,7 +45,7 @@ class Game implements GameData {
         const choices: AttackType[] = ['rock', 'paper', 'scissors'];
         const opponentAttack = choices[randomInt];
 
-        const { setOpponentAttack } = userGameStore.getState();
+        const { setOpponentAttack } = useGameStore.getState();
         this.opponentAttackType = opponentAttack;
 
         setOpponentAttack(opponentAttack);
@@ -48,7 +54,7 @@ class Game implements GameData {
     adaptiveAttack() {
         console.info('adaptive attack initialize');
 
-        const { attackHistory, setOpponentAttack } = userGameStore.getState();
+        const { attackHistory, setOpponentAttack } = useGameStore.getState();
 
         if (attackHistory.length < 5) return this.randomAttack();
 
@@ -75,6 +81,36 @@ class Game implements GameData {
         }
 
         setOpponentAttack(this.opponentAttackType);
+    }
+
+    didUserWinRound(user: AttackType, opponent: AttackType): boolean {
+        return (
+            (user === 'rock' && opponent === 'scissors') ||
+            (user === 'paper' && opponent === 'rock') ||
+            (user === 'scissors' && opponent === 'paper')
+        );
+    }
+
+    didOpponentWinRound(user: AttackType, opponent: AttackType): boolean {
+        return (
+            (opponent === 'rock' && user === 'scissors') ||
+            (opponent === 'paper' && user === 'rock') ||
+            (opponent === 'scissors' && user === 'paper')
+        );
+    }
+
+    processWinner() {
+       const { userAttackType, opponentAttackType, currentScore, setCurrentScore } = useGameStore.getState();
+
+       if (userAttackType === 'none' || userAttackType === opponentAttackType) return;
+
+       if (this.didUserWinRound(userAttackType, opponentAttackType)) {
+        setCurrentScore({ ...currentScore, user: currentScore.user + 1});
+       }
+
+       if (this.didOpponentWinRound(userAttackType, opponentAttackType)) {
+        setCurrentScore({...currentScore, opponent: currentScore.opponent + 1})
+       }
     }
 }
 

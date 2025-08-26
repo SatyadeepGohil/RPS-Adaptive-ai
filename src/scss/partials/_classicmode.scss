@@ -15,6 +15,11 @@
 #classic_mode_nav {
     margin: 5px;
     padding: 5px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
 
     button {
         padding: 8px;
