@@ -1,33 +1,16 @@
-import type { AttackType, DifficultyMode, RoundType, Score, GameData } from "./types/GameType";
+import type { AttackType } from "./types/GameType";
 import { useGameStore } from "./store/GameStore.js";
 
-class Game implements GameData {
-    userAttackType: AttackType;
-    opponentAttackType: AttackType;
-    difficultModeType: DifficultyMode;
-    roundType: RoundType;
-    currentScore: Score;
+class Game {
 
-    constructor () {
-        this.userAttackType = 'none';
-        this.opponentAttackType = 'none';
-        this.difficultModeType = 'easy';
-        this.roundType = 'infinite';
-        this.currentScore = { user: 0, opponent: 0};
-    }
-
-    processUserAttack(userAttack: AttackType) {
-        this.userAttackType = userAttack;
-        console.log(useGameStore.getState().attackHistory)
-        console.log("History Length",useGameStore.getState().attackHistory.length);
-
+    processUserAttack() {
         this.gameModeSelection();
-
         this.processWinner();
     }
 
     gameModeSelection () {
         const { difficultModeType } = useGameStore.getState();
+
         switch(difficultModeType) {
             case 'easy':
                 this.randomAttack();
@@ -38,15 +21,14 @@ class Game implements GameData {
     }
 
     randomAttack () {
-        if (this.userAttackType === 'none') return;
+        const { setOpponentAttack, userAttackType } = useGameStore.getState();
+
+        if (userAttackType === 'none') return;
         console.info('randomAttack running');
 
         const randomInt = Math.floor(Math.random() * 3);
         const choices: AttackType[] = ['rock', 'paper', 'scissors'];
         const opponentAttack = choices[randomInt];
-
-        const { setOpponentAttack } = useGameStore.getState();
-        this.opponentAttackType = opponentAttack;
 
         setOpponentAttack(opponentAttack);
     }
@@ -68,22 +50,26 @@ class Game implements GameData {
             b[1] > a[1] ? b : a
         )[0] as AttackType;
 
+        let commonMove: AttackType;
+
         switch(mostCommon) {
             case 'rock':
-                this.opponentAttackType = 'paper';
+                commonMove = 'paper';
                 break;
             case 'paper':
-                this.opponentAttackType = 'scissors';
+                commonMove = 'scissors';
                 break;
             case 'scissors':
-                this.opponentAttackType = 'rock';
+                commonMove = 'rock';
                 break;
+            default:
+                throw new Error(`Not Valid Move: ${mostCommon}`)
         }
 
-        setOpponentAttack(this.opponentAttackType);
+        setOpponentAttack(commonMove);
     }
 
-    didUserWinRound(user: AttackType, opponent: AttackType): boolean {
+    private didUserWinRound(user: AttackType, opponent: AttackType): boolean {
         return (
             (user === 'rock' && opponent === 'scissors') ||
             (user === 'paper' && opponent === 'rock') ||

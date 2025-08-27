@@ -4,7 +4,7 @@ import { AttackType, DifficultyMode } from './types/GameType';
 
 const game = new Game();
 
-const { setUserAttack, setDifficultyModeType} = useGameStore.getState();
+const { userAttackType, setUserAttack, setDifficultyModeType} = useGameStore.getState();
 
 let modeBtn = document.getElementById('difficulty_mode_btn') as HTMLElement;
 let roundBtn = document.getElementById('round_btn') as HTMLElement;
@@ -40,8 +40,11 @@ modeBtn.addEventListener('click', toggleDifficultyType);
 roundBtn.addEventListener('click', toggleRoundType);
 
 function moveSelection (move: string) {
+
+    if (!['rock', 'paper', 'scissors', 'none'].includes(userAttackType)) return;
+
     setUserAttack(move as AttackType);
-    game.processUserAttack(move as AttackType);
+    game.processUserAttack();
 }
 
 
