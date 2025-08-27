@@ -1,5 +1,5 @@
 import { createStore } from "zustand/vanilla";
-import type { AttackType, GameData, DifficultyMode, RoundType, Score } from "@/types/GameType";
+import type { GameData, AttackType, DifficultyMode, RoundType, Score } from "@/types/GameType";
 
 // State Types are assinged here
 export type GameStore = GameData & {
