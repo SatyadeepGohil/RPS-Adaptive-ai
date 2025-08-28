@@ -2,14 +2,23 @@ import type { AttackType } from "./types/GameType";
 import { useGameStore } from "./store/GameStore.js";
 
 class Game {
-
-    processUserAttack() {
-        this.gameModeSelection();
-        this.processWinner();
+    private get state() {
+        return useGameStore.getState();
     }
 
-    gameModeSelection () {
-        const { difficultModeType } = useGameStore.getState();
+    processUserAttack() {
+        const { currentWinner, setCurrentWinner } = this.state;
+
+        if (currentWinner !== '') setCurrentWinner('???');
+
+        this.gameModeSelection();
+        this.updateRound();
+        this.updateScore();
+        this.checkWinningConditions();
+    }
+
+    gameModeSelection() {
+        const { difficultModeType } = this.state;
 
         switch(difficultModeType) {
             case 'easy':
@@ -20,15 +29,52 @@ class Game {
         }
     }
 
-    randomAttack () {
-        const { setOpponentAttack, userAttackType } = useGameStore.getState();
+    checkWinningConditions() {
+        const { roundType, currentRound, setCurrentWinner, currentScore } = this.state;
+        if (roundType === 'infinite' || currentRound < 5) return;
+
+        const doesUserWin = currentScore.user > currentScore.opponent ? true : false;
+        const winnerName = doesUserWin ? 'You Win' : 'Opponent Win'
+
+        switch(roundType) {
+            case '5':
+                if (currentRound === 5) setCurrentWinner(winnerName);
+                break;
+            case "10":
+                if (currentRound === 10) setCurrentWinner(winnerName);
+                break;
+            case "15":
+                if (currentRound === 15) setCurrentWinner(winnerName);
+                break;
+        }
+    }
+
+    isCryptoAvaliable() {
+        return (
+            typeof window !== 'undefined' && !!window.crypto &&
+            typeof window.crypto.getRandomValues === 'function'
+        );
+    }
+
+    randomAttack() {
+        const { setOpponentAttack, userAttackType } = this.state;
 
         if (userAttackType === 'none') return;
-        console.info('randomAttack running');
 
-        const randomInt = Math.floor(Math.random() * 3);
         const choices: AttackType[] = ['rock', 'paper', 'scissors'];
-        const opponentAttack = choices[randomInt];
+        let randomValue;
+
+        if (this.isCryptoAvaliable()) {
+            const array = new Uint32Array(1);
+            crypto.getRandomValues(array);
+            randomValue = array[0] % choices.length;
+            console.log('Secure random:', array[0]);
+        } else {
+            console.warn('crypto.getRandomValues not avaliable, falling back to Math.random()');
+            randomValue = Math.floor(Math.random() * 3);
+        }
+
+        const opponentAttack = choices[randomValue];
 
         setOpponentAttack(opponentAttack);
     }
@@ -36,7 +82,7 @@ class Game {
     adaptiveAttack() {
         console.info('adaptive attack initialize');
 
-        const { attackHistory, setOpponentAttack } = useGameStore.getState();
+        const { attackHistory, setOpponentAttack } = this.state;
 
         if (attackHistory.length < 5) return this.randomAttack();
 
@@ -69,7 +115,7 @@ class Game {
         setOpponentAttack(commonMove);
     }
 
-    private didUserWinRound(user: AttackType, opponent: AttackType): boolean {
+    didUserWinRound(user: AttackType, opponent: AttackType): boolean {
         return (
             (user === 'rock' && opponent === 'scissors') ||
             (user === 'paper' && opponent === 'rock') ||
@@ -85,10 +131,14 @@ class Game {
         );
     }
 
-    processWinner() {
-       const { userAttackType, opponentAttackType, currentScore, setCurrentScore } = useGameStore.getState();
+    updateScore() {
+       const { userAttackType, opponentAttackType, currentScore, setCurrentScore } = this.state;
 
-       if (userAttackType === 'none' || userAttackType === opponentAttackType) return;
+       if (userAttackType === 'none') return;
+
+       if (userAttackType === opponentAttackType) {
+        setCurrentScore({ ...currentScore, tie: currentScore.tie + 1});
+       }
 
        if (this.didUserWinRound(userAttackType, opponentAttackType)) {
         setCurrentScore({ ...currentScore, user: currentScore.user + 1});
@@ -97,6 +147,12 @@ class Game {
        if (this.didOpponentWinRound(userAttackType, opponentAttackType)) {
         setCurrentScore({...currentScore, opponent: currentScore.opponent + 1})
        }
+    }
+
+    updateRound() {
+        const { currentRound ,setCurrentRound, roundType } = this.state;
+        if (roundType === 'infinite') return;
+        setCurrentRound(currentRound + 1);
     }
 }
 
