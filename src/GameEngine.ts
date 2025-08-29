@@ -34,17 +34,18 @@ class Game {
         if (roundType === 'infinite' || currentRound < 5) return;
 
         const doesUserWin = currentScore.user > currentScore.opponent ? true : false;
-        const winnerName = doesUserWin ? 'You Win' : 'Opponent Win'
+        const winnerName = doesUserWin ? 'You Win' : 'Opponent Win';
+        const tieCheck = currentScore.user === currentScore.opponent ? 'Tie' : winnerName;
 
         switch(roundType) {
             case '5':
-                if (currentRound === 5) setCurrentWinner(winnerName);
+                if (currentRound === 5) setCurrentWinner(tieCheck);
                 break;
             case "10":
-                if (currentRound === 10) setCurrentWinner(winnerName);
+                if (currentRound === 10) setCurrentWinner(tieCheck);
                 break;
             case "15":
-                if (currentRound === 15) setCurrentWinner(winnerName);
+                if (currentRound === 15) setCurrentWinner(tieCheck);
                 break;
         }
     }
