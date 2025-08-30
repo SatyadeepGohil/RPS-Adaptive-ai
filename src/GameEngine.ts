@@ -2,10 +2,12 @@ import type { AttackType } from "./types/GameType";
 import { useGameStore } from "./store/GameStore.js";
 
 class Game {
+    // State Accessor
     private get state() {
         return useGameStore.getState();
     }
 
+    // Main Entry Point
     processUserAttack() {
         this.gameModeSelection();
         this.updateRound();
@@ -13,42 +15,25 @@ class Game {
         this.checkWinningConditions();
     }
 
+    // Game Mode Logic
     gameModeSelection() {
         const { difficultModeType } = this.state;
 
-        switch(difficultModeType) {
+        switch (difficultModeType) {
             case 'easy':
                 this.randomAttack();
                 break;
             case 'medium':
                 this.adaptiveAttack();
-        }
-    }
-
-    checkWinningConditions() {
-        const { roundType, currentRound, setCurrentWinner, currentScore } = this.state;
-        if (roundType === 'infinite' || currentRound < 5) return;
-
-        const doesUserWin = currentScore.user > currentScore.opponent ? true : false;
-        const winnerName = doesUserWin ? 'You Win' : 'Opponent Win';
-        const tieCheck = currentScore.user === currentScore.opponent ? 'Tie' : winnerName;
-
-        switch(roundType) {
-            case '5':
-                if (currentRound === 5) setCurrentWinner(tieCheck);
-                break;
-            case "10":
-                if (currentRound === 10) setCurrentWinner(tieCheck);
-                break;
-            case "15":
-                if (currentRound === 15) setCurrentWinner(tieCheck);
                 break;
         }
     }
 
+    // Attack Generation
     isCryptoAvaliable() {
         return (
-            typeof window !== 'undefined' && !!window.crypto &&
+            typeof window !== 'undefined' &&
+            !!window.crypto &&
             typeof window.crypto.getRandomValues === 'function'
         );
     }
@@ -59,7 +44,7 @@ class Game {
         if (userAttackType === 'none') return;
 
         const choices: AttackType[] = ['rock', 'paper', 'scissors'];
-        let randomValue;
+        let randomValue: number;
 
         if (this.isCryptoAvaliable()) {
             const array = new Uint32Array(1);
@@ -67,51 +52,50 @@ class Game {
             randomValue = array[0] % choices.length;
             console.log('Secure random:', array[0]);
         } else {
-            console.warn('crypto.getRandomValues not avaliable, falling back to Math.random()');
+            console.warn('crypto.getRandomValues not available, falling back to Math.random()');
             randomValue = Math.floor(Math.random() * 3);
         }
 
         const opponentAttack = choices[randomValue];
-
         setOpponentAttack(opponentAttack);
     }
 
     adaptiveAttack() {
         console.info('adaptive attack initialize');
-
         const { attackHistory, setOpponentAttack } = this.state;
 
         if (attackHistory.length < 5) return this.randomAttack();
+        console.info('adaptiveAttack passed the history length check.');
 
-        console.info('adaptiveAttack pass the histroy length check.')
+        // Count occurrences
+        const counts = { rock: 0, paper: 0, scissors: 0 } as Record<AttackType, number>;
+        for (const move of attackHistory) counts[move]++;
 
-        const counts = { rock: 0, paper: 0, scissors: 0} as Record<AttackType, number>;
-
-        for (let move of attackHistory) counts[move]++;
-
-        const mostCommon = Object.entries(counts).reduce((a, b) => 
+        // Most common move
+        const mostCommon = Object.entries(counts).reduce((a, b) =>
             b[1] > a[1] ? b : a
         )[0] as AttackType;
 
-        let commonMove: AttackType;
-
-        switch(mostCommon) {
+        // Counter the most common move
+        let counterMove: AttackType;
+        switch (mostCommon) {
             case 'rock':
-                commonMove = 'paper';
+                counterMove = 'paper';
                 break;
             case 'paper':
-                commonMove = 'scissors';
+                counterMove = 'scissors';
                 break;
             case 'scissors':
-                commonMove = 'rock';
+                counterMove = 'rock';
                 break;
             default:
-                throw new Error(`Not Valid Move: ${mostCommon}`)
+                throw new Error(`Not Valid Move: ${mostCommon}`);
         }
 
-        setOpponentAttack(commonMove);
+        setOpponentAttack(counterMove);
     }
 
+    // Round Outcome Helpers
     didUserWinRound(user: AttackType, opponent: AttackType): boolean {
         return (
             (user === 'rock' && opponent === 'scissors') ||
@@ -128,28 +112,51 @@ class Game {
         );
     }
 
+    // Score & Rounds
     updateScore() {
-       const { userAttackType, opponentAttackType, currentScore, setCurrentScore } = this.state;
+        const { userAttackType, opponentAttackType, currentScore, setCurrentScore } = this.state;
 
-       if (userAttackType === 'none') return;
+        if (userAttackType === 'none') return;
 
-       if (userAttackType === opponentAttackType) {
-        setCurrentScore({ ...currentScore, tie: currentScore.tie + 1});
-       }
+        if (userAttackType === opponentAttackType) {
+            setCurrentScore({ ...currentScore, tie: currentScore.tie + 1 });
+        }
 
-       if (this.didUserWinRound(userAttackType, opponentAttackType)) {
-        setCurrentScore({ ...currentScore, user: currentScore.user + 1});
-       }
+        if (this.didUserWinRound(userAttackType, opponentAttackType)) {
+            setCurrentScore({ ...currentScore, user: currentScore.user + 1 });
+        }
 
-       if (this.didOpponentWinRound(userAttackType, opponentAttackType)) {
-        setCurrentScore({...currentScore, opponent: currentScore.opponent + 1})
-       }
+        if (this.didOpponentWinRound(userAttackType, opponentAttackType)) {
+            setCurrentScore({ ...currentScore, opponent: currentScore.opponent + 1 });
+        }
     }
 
     updateRound() {
-        const { currentRound ,setCurrentRound, roundType } = this.state;
+        const { currentRound, setCurrentRound, roundType } = this.state;
         if (roundType === 'infinite') return;
         setCurrentRound(currentRound + 1);
+    }
+
+    // Win Conditions
+    checkWinningConditions() {
+        const { roundType, currentRound, setCurrentWinner, currentScore } = this.state;
+        if (roundType === 'infinite' || currentRound < 5) return;
+
+        const doesUserWin = currentScore.user > currentScore.opponent;
+        const winnerName = doesUserWin ? 'You Win' : 'Opponent Win';
+        const tieCheck = currentScore.user === currentScore.opponent ? 'Tie' : winnerName;
+
+        switch (roundType) {
+            case '5':
+                if (currentRound === 5) setCurrentWinner(tieCheck);
+                break;
+            case '10':
+                if (currentRound === 10) setCurrentWinner(tieCheck);
+                break;
+            case '15':
+                if (currentRound === 15) setCurrentWinner(tieCheck);
+                break;
+        }
     }
 }
 
