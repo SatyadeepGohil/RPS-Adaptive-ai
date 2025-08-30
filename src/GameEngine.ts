@@ -7,10 +7,6 @@ class Game {
     }
 
     processUserAttack() {
-        const { currentWinner, setCurrentWinner } = this.state;
-
-        if (currentWinner !== '') setCurrentWinner('???');
-
         this.gameModeSelection();
         this.updateRound();
         this.updateScore();

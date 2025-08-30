@@ -25,6 +25,9 @@ export const useGameStore = createStore<GameStore>((set) => ({
     setDifficultyModeType: (mode) => 
         set(() => ({
             difficultModeType: mode,
+            currentRound: 0,
+            currentScore: { user: 0, opponent: 0, tie: 0 },
+            currentWinner: '',
         })),
 
     setRoundType: (round) =>
@@ -48,7 +51,5 @@ export const useGameStore = createStore<GameStore>((set) => ({
     setCurrentWinner: (winner) =>
         set(() => ({
             currentWinner: winner,
-            currentRound: 0,
-            currentScore: { user: 0, opponent: 0, tie: 0 },
         })),
 }))
