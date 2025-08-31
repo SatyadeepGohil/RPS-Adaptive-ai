@@ -95,7 +95,7 @@ class Game {
         setOpponentAttack(counterMove);
     }
 
-    // Round Outcome Helpers
+    // Helpers
     didUserWinRound(user: AttackType, opponent: AttackType): boolean {
         return (
             (user === 'rock' && opponent === 'scissors') ||
@@ -110,6 +110,14 @@ class Game {
             (opponent === 'paper' && user === 'rock') ||
             (opponent === 'scissors' && user === 'paper')
         );
+    }
+
+    isRoundLimitReached(): boolean {
+        const {roundType, currentRound } = this.state;
+        if (roundType === 'infinite') return false;
+
+        const limit = parseInt(roundType, 10);
+        return currentRound >= limit;
     }
 
     // Score & Rounds
@@ -132,31 +140,27 @@ class Game {
     }
 
     updateRound() {
-        const { currentRound, setCurrentRound, roundType } = this.state;
-        if (roundType === 'infinite') return;
+        const { currentRound, setCurrentRound } = this.state;
         setCurrentRound(currentRound + 1);
     }
 
     // Win Conditions
     checkWinningConditions() {
-        const { roundType, currentRound, setCurrentWinner, currentScore } = this.state;
-        if (roundType === 'infinite' || currentRound < 5) return;
+        const { setCurrentWinner, currentScore } = this.state;
+        if (!this.isRoundLimitReached()) return;
 
         const doesUserWin = currentScore.user > currentScore.opponent;
         const winnerName = doesUserWin ? 'You Win' : 'Opponent Win';
         const tieCheck = currentScore.user === currentScore.opponent ? 'Tie' : winnerName;
 
-        switch (roundType) {
-            case '5':
-                if (currentRound === 5) setCurrentWinner(tieCheck);
-                break;
-            case '10':
-                if (currentRound === 10) setCurrentWinner(tieCheck);
-                break;
-            case '15':
-                if (currentRound === 15) setCurrentWinner(tieCheck);
-                break;
-        }
+        setCurrentWinner(tieCheck);
+    }
+    
+    reset() {
+        const { setCurrentRound, setCurrentScore, setCurrentWinner } = this.state;
+        setCurrentRound(0);
+        setCurrentScore({ user: 0, opponent: 0, tie: 0});
+        setCurrentWinner('');
     }
 }
 

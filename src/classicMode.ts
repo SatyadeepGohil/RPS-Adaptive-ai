@@ -19,7 +19,6 @@ const overlay       = document.getElementById('overlay') as HTMLElement;
 const winnerModal   = document.getElementById('winner_modal') as HTMLElement;
 const winnerText    = document.getElementById('winner_text') as HTMLElement;
 const playAgainBtn  = document.getElementById('play_again_btn') as HTMLElement;
-const cancelBtn     = document.getElementById('cancel_btn') as HTMLElement;
 
 // Card collection
 const cards = document.getElementsByClassName('card');
@@ -69,12 +68,39 @@ function handleCardClick(event: Event): void {
     setTimeout(showOpponentAttack, 100);
 }
 
-function toggleDisableClass(): void {
+function toggleCards(): void {
     for (const card of cards) {
         isAnimating 
             ? card.classList.add('disable') 
             : card.classList.remove('disable');
     }
+}
+
+function toggleClass(el: HTMLElement, className: string, toggler: boolean): void {
+    toggler ? el.classList.add(className) : el.classList.remove(className);
+}
+
+function winnerModalUpdate(): void {
+    const { currentScore } = useGameStore.getState();
+    let winnerChecker;
+
+    if (currentScore.user === currentScore.opponent) winnerChecker = 'TIE!';
+    if (currentScore.user > currentScore.opponent) winnerChecker = 'You Win!';
+    else { winnerChecker = 'Opponent Win!'}
+
+    winnerText.innerText = `
+    ${winnerChecker}
+    \nUser: ${currentScore.user}
+    \nOpponent: ${currentScore.opponent}
+    \nTie: ${currentScore.tie}
+    `;
+}
+
+function handlePlayAgain() {
+    game.reset();
+    updateStatus();
+    toggleClass(overlay, 'active', false);
+    toggleClass(winnerModal, 'active', false);
 }
 
 function updateStatus(): void {
@@ -92,13 +118,18 @@ function showOpponentAttack(): void {
 
     flipper.classList.add('active');
     isAnimating = true;
-    toggleDisableClass();
+    if(game.isRoundLimitReached()) {
+        toggleClass(overlay, 'active', true);
+        toggleClass(winnerModal, 'active', true);
+        winnerModalUpdate();
+    }
+    toggleCards();
     updateStatus();
 
     setTimeout(() => {
         flipper.classList.remove('active');
         isAnimating = false;
-        toggleDisableClass();
+        toggleCards();
     }, 2500);
 }
 
@@ -110,6 +141,7 @@ toggleRoundType();
 
 DifficultyBtn.addEventListener('click', toggleDifficultyType);
 roundBtn.addEventListener('click', toggleRoundType);
+playAgainBtn.addEventListener('click', handlePlayAgain);
 
 for (const card of cards) {
     card.addEventListener('click', handleCardClick);
