@@ -61,15 +61,15 @@ class Game {
     }
 
     adaptiveAttack() {
-        console.info('adaptive attack initialize');
         const { attackHistory, setOpponentAttack } = this.state;
 
         if (attackHistory.length < 5) return this.randomAttack();
-        console.info('adaptiveAttack passed the history length check.');
+        const recentMoves = attackHistory.slice(-6, -1);
+        console.info('Recent Moves', recentMoves);
 
         // Count occurrences
         const counts = { rock: 0, paper: 0, scissors: 0 } as Record<AttackType, number>;
-        for (const move of attackHistory) counts[move]++;
+        for (const move of recentMoves) counts[move]++;
 
         // Most common move
         const mostCommon = Object.entries(counts).reduce((a, b) =>
@@ -91,7 +91,7 @@ class Game {
             default:
                 throw new Error(`Not Valid Move: ${mostCommon}`);
         }
-
+        console.info('Counter Move', counterMove);
         setOpponentAttack(counterMove);
     }
 
