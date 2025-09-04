@@ -27,3 +27,6 @@ Thumbs.db
 
 # Optional: build tools or editor temp folders
 .sass-cache/
+
+# Database creditionals
+.env
