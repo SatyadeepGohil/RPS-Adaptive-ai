@@ -1,5 +1,5 @@
-import type { AttackType } from "./types/GameType";
-import { useGameStore } from "./store/GameStore.js";
+import type { AttackType } from "../types/GameType";
+import { useGameStore } from "../store/GameStore.js";
 
 class Game {
     // State Accessor
