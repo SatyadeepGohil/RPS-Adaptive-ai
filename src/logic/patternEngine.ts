@@ -1,16 +1,22 @@
-async function getPatterns() {
-    try {
-        const response = await fetch('http://localhost:3000/pattern_lib');
-        if (!response.ok) throw new Error('Network response was not ok');
+import { PatternDataType } from "@/types/PatternEngineType";
 
-        const patterns = await response.json();
-        console.log('Patterns:', patterns);
+class PatternEngine implements PatternDataType {
+    patterns: Object;
+    
+    constructor () {
+        this.patterns = {};
+    }
 
-        return patterns;
-    } catch (error) {
-        console.error('Falied t ofetch patterns:', error);
-        return [];
+    async getPattern_lib () {
+        try {
+            const response = await fetch('http://localhost:3000/pattern_lib');
+            if (!response.ok) throw new Error('Network response was not ok');
+            this.patterns = await response.json();
+        } catch (error) {
+            console.error('Failed to featch patterns:', error);
+            this.patterns = {};
+        }
     }
 }
 
-let SequencePatterns = getPatterns();
+export default PatternEngine;
