@@ -1,3 +1,3 @@
 export interface PatternDataType {
-    patterns: Object;
+    patterns: any[];
 }

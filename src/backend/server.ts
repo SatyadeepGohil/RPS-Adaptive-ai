@@ -10,7 +10,7 @@ app.get('/pattern_lib', async (_req, res) => {
         const result = await pool.query('SELECT * FROM pattern_library');
         res.json(result.rows);
     } catch (err) {
-        console.error(err);
+        console.error("Database error:", err);
         res.status(500).json({ error: 'Database query failed' });
     }
 });
