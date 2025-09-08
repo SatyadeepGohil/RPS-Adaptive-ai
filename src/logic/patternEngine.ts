@@ -20,7 +20,7 @@ class PatternEngine implements PatternDataType {
         }
     }
 
-    storeInTrie() {
+    createTrie() {
         if (!this.patterns || this.patterns.length === 0) {
             console.warn('No patterns loaded, skipping insert');
             return;
@@ -32,15 +32,24 @@ class PatternEngine implements PatternDataType {
             trie.insert(row.pattern);
         }
     }
+
+    storeInMap() {
+        let map = new Map();
+
+        for(let item of this.patterns) {
+            map.set(item.pattern, item);
+        }
+    }
 }
 
 const run = async () => {
     const engine = new PatternEngine();
     await engine.getPattern_lib();
-    engine.storeInTrie();
+    engine.createTrie();
+    engine.storeInMap();
 };
 let t1 = performance.now();
-run();
+await run();
 let t2 = performance.now();
 
 console.log('Trie storage timing', t2 - t1 + 'ms');
