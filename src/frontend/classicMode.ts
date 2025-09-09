@@ -1,4 +1,4 @@
-import Game from '../logic/GameEngine.js';
+import Game from '../logic/gameEngine.js';
 import { useGameStore } from '@/store/GameStore.js';
 import { RoundType, DifficultyMode, AttackType } from '@/types/GameType.js';
 
