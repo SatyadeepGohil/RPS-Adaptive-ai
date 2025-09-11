@@ -4,15 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RPS-Prediction-ai: Classic Mode</title>
+    <link rel="preload" href="../../dist/store/GameStore.js" as="script" crossorigin="">
+    <link rel="preload" href="../../dist/classicMode.js" as="script" crossorigin="">
+    <link rel="preload" href="../../dist/GameEngine.js" as="script" crossorigin="">
+    <link rel="preload" href="../scss/index.css" as="style">
     <link rel="stylesheet" href="../scss/index.css">
-    <script type="importmap">
-        {
-          "imports": {
-            "zustand": "https://cdn.skypack.dev/zustand@4.4.4",
-            "zustand/vanilla": "https://cdn.skypack.dev/zustand@4.4.4/vanilla"
-          }
-        }
-    </script>
 </head>
 <body>
     <div id="classic_mode_container">
@@ -52,6 +48,7 @@
     </div>
     <script type="module" src="../../dist/classicMode.js"></script>
     <script type="module">
+        let t1 = performance.now();
         function activeWorker() {
             const worker = new Worker("../../dist/logic/worker.js", { type: "module" });
             // main
@@ -68,7 +65,6 @@
             };
         }
 
-        let t1 = performance.now();
         await document.addEventListener('DOMContentLoaded', activeWorker);
         let t2 = performance.now();
         console.info((t2 - t1).toFixed(2) + 'ms');

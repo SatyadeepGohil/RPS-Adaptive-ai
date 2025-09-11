@@ -1,4 +1,4 @@
-import { createStore } from "zustand/vanilla";
+import { createStore } from "../lib/esm/vanilla.js";
 import type { GameStore } from "@/types/GameType";
 
 export const useGameStore = createStore<GameStore>((set) => ({
