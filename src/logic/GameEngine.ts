@@ -1,5 +1,8 @@
 import type { AttackType } from "../types/GameType";
 import { useGameStore } from "../store/GameStore.js";
+import N_Grams from "./n-grams.js";
+
+let nGrams = new N_Grams;
 
 class Game {
     // State Accessor
@@ -13,6 +16,7 @@ class Game {
         this.updateRound();
         this.updateScore();
         this.checkWinningConditions();
+        nGrams.calculateOccurence();
     }
 
     // Game Mode Logic
@@ -50,7 +54,6 @@ class Game {
             const array = new Uint32Array(1);
             crypto.getRandomValues(array);
             randomValue = array[0] % choices.length;
-            console.log('Secure random:', array[0]);
         } else {
             console.warn('crypto.getRandomValues not available, falling back to Math.random()');
             randomValue = Math.floor(Math.random() * 3);

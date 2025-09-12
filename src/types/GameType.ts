@@ -10,6 +10,8 @@ export type Round = number;
 
 export type Winner = string;
 
+export type AttackHistory = AttackType[];
+
 // GameData, because it's snapshot of game's current data
 export interface GameData {
     userAttackType: AttackType;
@@ -19,11 +21,11 @@ export interface GameData {
     currentScore: Score;
     currentRound: Round;
     currentWinner: Winner;
+    attackHistory: AttackType[];
 }
 
 // State Types are assinged here
 export type GameStore = GameData & {
-    attackHistory: AttackType[];
     setUserAttack: (attack: AttackType) => void;
     setOpponentAttack: (attack: AttackType) => void;
     setDifficultyModeType: (mode: DifficultyMode) => void;

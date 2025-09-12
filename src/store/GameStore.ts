@@ -20,8 +20,7 @@ export const useGameStore = createStore<GameStore>((set) => ({
     setOpponentAttack: (attack) => 
         set(() => ({
             opponentAttackType: attack,
-        })),
-    
+        })),         
     setDifficultyModeType: (mode) => 
         set(() => ({
             difficultModeType: mode,
