@@ -4,19 +4,19 @@ A simple **Rock-Paper-Scissors game** built with **TypeScript, Zustand, Postgres
 
 ---
 
-> ⚠️ Important Notice on Database Usage
-> This project relies on a Postgres database to store and query the opponent’s pattern_library.
->
-> - *The database contains custom-generated patterns essential for the AI predictions.*
->
-> - *Database credentials will not be shared publicly.*
+## ⚠️ Important Notice on Database Usage
+This project relies on a Postgres database to store and query the opponent’s pattern_library.
 
-> - *Cloning the repo alone will not give a fully working game unless you set up your own Postgres instance and pattern generation pipeline.*
->
-> 👉 This repository serves primarily as a public showcase of my work.
->
-> A comprehensive guide for setting up the database locally will be published later.
-> The deployed version will be fully playable without local setup.
+- *The database contains custom-generated patterns essential for the AI predictions.*
+
+- *Database credentials will not be shared publicly.*
+
+- *Cloning the repo alone will not give a fully working game unless you set up your own Postgres instance and pattern generation pipeline.*
+
+### 👉 This repository serves primarily as a public showcase of my work.
+
+A comprehensive guide for setting up the database locally will be published later.
+The deployed version will be fully playable without local setup.
 
 ---
 
