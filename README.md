@@ -1,6 +1,6 @@
 # 🎮 RPS Prediction AI
 
-A simple **Rock-Paper-Scissors game** built with **TypeScript, Zustand, Postgres, SCSS, Node(Express) and HTML**, featuring multiple difficulty modes and AI-based opponent mechanics.
+A simple **Rock-Paper-Scissors game** built with **TypeScript, Zustand, Postgres, Node(Express), HTML and CSS**, featuring multiple difficulty modes and AI-based opponent mechanics.
 
 ---
 
@@ -12,11 +12,6 @@ This project relies on a Postgres database to store and query the opponent’s p
 - *Database credentials will not be shared publicly.*
 
 - *Cloning the repo alone will not give a fully working game unless you set up your own Postgres instance and pattern generation pipeline.*
-
-### 👉 This repository serves primarily as a public showcase of my work.
-
-A comprehensive guide for setting up the database locally will be published later.
-The deployed version will be fully playable without local setup.
 
 ---
 
@@ -56,8 +51,6 @@ Run TypeScript:
 ```bash
 npx tsc
 ```
-### 4.Compile SCSS 
-Setup `SCSS` compilation in `VS Code`. If you're unfamiliar with SCSS setup, check this [tutorial](https://medium.com/@codingcarter/how-to-compile-scss-code-in-visual-studio-code-c8406fe54a18)
 
 ## ⚡️ Zustand Setup & Build Instructions
 
