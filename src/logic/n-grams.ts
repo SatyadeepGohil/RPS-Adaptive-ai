@@ -1,4 +1,6 @@
-import { N_Grams_Type } from "@/types/nGramsType.js";
+interface N_Grams_Type {
+    totalPatterns: number;
+}
 
 class N_Grams implements N_Grams_Type {
     totalPatterns: number;

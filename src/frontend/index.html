@@ -26,6 +26,7 @@
             height: auto;
             border-radius: 10px;
             transition: transform 0.3s ease-in-out;
+            cursor: pointer;
         }
         #main_menu__button_container button:hover {
             filter: brightness(0.8);
@@ -37,8 +38,7 @@
             transform: translateY(4px);
         }
     </style>
-    <link rel="preload" href="/dist/logic/trie.js" as="script" crossorigin>
-    <link rel="preload" href="/dist/logic/processPatterns.js" as="script" crossorigin>
+    <link rel="preload" href="/dist/logic/fetchLib.js" as="script" crossorigin>
 </head>
 <body>
     <div id="main_menu__background">
@@ -46,19 +46,12 @@
             <a href="./classicMode.html">
                 <button>Start</button>
             </a>
-            <button>Load Save</button>
             <button>Settings</button>
             <button>Quit</button>
         </div>
     </div>
     <script type="module">
-        import ProcessPatterns from '/dist/logic/processPatterns.js';
-
-        function fetchLib() {
-            const processPatterns = new ProcessPatterns();
-            processPatterns.getPattern_lib();
-        }
-
+        import fetchLib from '/dist/logic/fetchLib.js';
         document.addEventListener('DOMContentLoaded', fetchLib);
 
     </script>
