@@ -1,11 +1,9 @@
 import Game from '../logic/gameEngine.js';
-import { useGameStore } from '@/store/GameStore.js';
 import { RoundType, DifficultyMode, AttackType } from '@/types/GameType.js';
+import { gameState, setDifficultyModeType, setUserAttack, setRoundType } from '../store/GameStore.js';
 
 // Initialization
 const game = new Game();
-const { setUserAttack, setDifficultyModeType, setRoundType } = useGameStore.getState();
-
 // DOM Elements
 const flipper       = document.getElementById('flipper') as HTMLElement;
 const front         = document.getElementById('front') as HTMLElement;
@@ -81,7 +79,7 @@ function toggleClass(el: HTMLElement, className: string, toggler: boolean): void
 }
 
 function winnerModalUpdate(): void {
-    const { currentScore } = useGameStore.getState();
+    const { currentScore } = gameState.state;
     let winnerChecker;
 
     if (currentScore.user === currentScore.opponent) winnerChecker = 'TIE!';
@@ -104,7 +102,7 @@ function handlePlayAgain() {
 }
 
 function updateStatus(): void {
-    const { currentScore, currentRound } = useGameStore.getState();
+    const { currentScore, currentRound } = gameState.state;
     roundCount.innerText    = `Current Round: ${currentRound}`;
     userScore.innerText     = `User: ${currentScore.user}`;
     tieCount.innerText      = `Tie: ${currentScore.tie}`;
@@ -113,7 +111,7 @@ function updateStatus(): void {
 
 // Flip animation to reveal opponent's attack
 function showOpponentAttack(): void {
-    const { opponentAttackType } = useGameStore.getState();
+    const { opponentAttackType } = gameState.state;
     front.innerText = opponentAttackType;
 
     flipper.classList.add('active');

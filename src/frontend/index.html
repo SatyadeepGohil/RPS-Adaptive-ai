@@ -4,7 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RPS-Prediction-ai</title>
-    <link rel="stylesheet" href="../scss/index.css">
+    <style>
+        #main_menu__button_container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            background-color: gold;
+            width: 400px;
+            height: 300px;
+            border-radius: 10px;
+        }
+        #main_menu__button_container button {
+            font-size: 2rem;
+            width: 250px;
+            height: auto;
+            border-radius: 10px;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        #main_menu__button_container button:hover {
+            filter: brightness(0.8);
+            transform: translateY(-2px);
+        }
+        #main_menu__button_container button:active {
+            background-color: #fff;
+            color: #000;
+            transform: translateY(4px);
+        }
+    </style>
+    <link rel="preload" href="/dist/logic/fetchLib.js" as="script" crossorigin>
+    <link rel="preload" href="/dist/logic/patternsCache.js" as="script" crossorigin>
+    <link rel="preload" href="/dist/logic/trie.js" as="script" crossorigin>
 </head>
 <body>
     <div id="main_menu__background">
@@ -12,10 +48,13 @@
             <a href="./classicMode.html">
                 <button>Start</button>
             </a>
-            <button>Load Save</button>
             <button>Settings</button>
             <button>Quit</button>
         </div>
     </div>
+    <script type="module">
+        import fetchLib from '/dist/logic/fetchLib.js';
+        document.addEventListener('DOMContentLoaded', fetchLib);
+    </script>
 </body>
 </html>

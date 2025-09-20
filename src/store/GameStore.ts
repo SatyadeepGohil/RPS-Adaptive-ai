@@ -1,55 +1,55 @@
-import { createStore } from "../lib/esm/vanilla.js";
-import type { GameStore } from "@/types/GameType";
+import { GameData } from "@/types/GameType";
+import State from "../logic/stateManager.js";
+import { AttackType, DifficultyMode, Round, RoundType, Score, Winner } from "@/types/GameType";
 
-export const useGameStore = createStore<GameStore>((set) => ({
-    userAttackType: 'none',
-    opponentAttackType: 'none',
-    difficultModeType: 'easy',
-    roundType: 'infinite',
-    currentScore: { user: 0, opponent: 0, tie: 0 },
-    currentRound: 0,
-    currentWinner: '',
-    attackHistory: [],
+export const gameState = new State<GameData>({
+  userAttackType: 'none',
+  opponentAttackType: 'none',
+  difficultModeType: 'easy',
+  roundType: 'infinite',
+  currentScore: { user: 0, opponent: 0, tie: 0 },
+  currentRound: 0,
+  currentWinner: '',
+  attackHistory: [],
+});
 
-    setUserAttack: (attack) => 
-        set((state) => ({
-            userAttackType: attack,
-            attackHistory: [...state.attackHistory, attack].slice(-20),
-        })),
+export function setUserAttack(attack: AttackType) {
+    gameState.setStates({
+        userAttackType: attack,
+        attackHistory: [...gameState.state.attackHistory, attack].slice(-20),
+    })
+}
 
-    setOpponentAttack: (attack) => 
-        set(() => ({
-            opponentAttackType: attack,
-        })),
-    
-    setDifficultyModeType: (mode) => 
-        set(() => ({
-            difficultModeType: mode,
-            currentRound: 0,
-            currentScore: { user: 0, opponent: 0, tie: 0 },
-            currentWinner: '',
-        })),
+export function setOpponentAttack(attack: AttackType) {
+    gameState.setState('opponentAttackType', attack);
+}
 
-    setRoundType: (round) =>
-        set(() => ({
-            roundType: round,
-            currentRound: 0,
-            currentScore: { user: 0, opponent: 0, tie: 0 },
-            currentWinner: '',
-        })),
+export function setDifficultyModeType(mode: DifficultyMode) {
+    gameState.setStates({
+        difficultModeType: mode,
+        currentRound: 0,
+        currentScore: { user: 0, opponent: 0, tie: 0 },
+        currentWinner: '',
+    })
+}
 
-    setCurrentScore: (point) =>
-        set(() => ({
-            currentScore: point,
-        })),
+export function setRoundType(rType: RoundType) {
+    gameState.setStates({
+        roundType: rType,
+        currentRound: 0,
+        currentScore: { user: 0, opponent: 0, tie: 0 },
+        currentWinner: '',
+    })
+}
 
-    setCurrentRound: (round) =>
-        set(() => ({
-            currentRound: round,
-        })),
+export function setCurrentRound(round: Round) {
+    gameState.setState('currentRound', round);
+}
 
-    setCurrentWinner: (winner) =>
-        set(() => ({
-            currentWinner: winner,
-        })),
-}))
+export function setCurrentScore(point: Score) {
+    gameState.setState('currentScore', point);
+}
+
+export function setCurrentWinner(winner: Winner) {
+    gameState.setState('currentWinner', winner);
+}
