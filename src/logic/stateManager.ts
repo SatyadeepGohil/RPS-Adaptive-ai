@@ -24,6 +24,24 @@ class State<T extends Record<string, any>> {
         }
     }
 
+    setStates(partial: Partial<T>) {
+        let changed = false;
+        for(const key in partial) {
+            if (partial[key] !== this.state[key]) {
+                (this.state as any)[key] = partial[key];
+                changed = true;
+            }
+        }
+
+        if (changed) {
+            this.observers.forEach(({ observer, dependencies }) => {
+                if ([...dependencies].some((dep) => dep in partial)) {
+                    observer(this.state);
+                }
+            });
+        }
+    }
+
     observe(observer: (proxy: T) => void) {
         const dependencies = new Set<keyof T>();
 
