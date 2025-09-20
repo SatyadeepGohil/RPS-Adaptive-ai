@@ -14,8 +14,8 @@ export type AttackHistory = AttackType[];
 
 // GameData, because it's snapshot of game's current data
 export interface GameData {
-    userAttackType: AttackType;
-    opponentAttackType: AttackType;
+    userAttackType: AttackType | 'none';
+    opponentAttackType: AttackType | 'none';
     difficultModeType: DifficultyMode;
     roundType: RoundType;
     currentScore: Score;

@@ -1,10 +1,10 @@
-import type { AttackType } from "../types/GameType";
-import { useGameStore } from "../store/GameStore.js";
+import type { AttackType } from "../types/GameType.js";
+import { gameState, setOpponentAttack, setCurrentWinner, setCurrentRound, setCurrentScore } from "../store/GameStore.js";
 
 class Game {
     // State Accessor
     private get state() {
-        return useGameStore.getState();
+        return gameState.state;
     }
 
     // Main Entry Point
@@ -39,7 +39,7 @@ class Game {
     }
 
     randomAttack() {
-        const { setOpponentAttack, userAttackType } = this.state;
+        const { userAttackType } = this.state;
 
         if (userAttackType === 'none') return;
 
@@ -60,7 +60,7 @@ class Game {
     }
 
     adaptiveAttack() {
-        const { attackHistory, setOpponentAttack } = this.state;
+        const { attackHistory } = this.state;
 
         if (attackHistory.length < 5) return this.randomAttack();
         const recentMoves = attackHistory.slice(-6, -1);
@@ -121,7 +121,7 @@ class Game {
 
     // Score & Rounds
     updateScore() {
-        const { userAttackType, opponentAttackType, currentScore, setCurrentScore } = this.state;
+        const { userAttackType, opponentAttackType, currentScore } = this.state;
 
         if (userAttackType === 'none') return;
 
@@ -139,13 +139,13 @@ class Game {
     }
 
     updateRound() {
-        const { currentRound, setCurrentRound } = this.state;
+        const { currentRound  } = this.state;
         setCurrentRound(currentRound + 1);
     }
 
     // Win Conditions
     checkWinningConditions() {
-        const { setCurrentWinner, currentScore } = this.state;
+        const { currentScore } = this.state;
         if (!this.isRoundLimitReached()) return;
 
         const doesUserWin = currentScore.user > currentScore.opponent;
@@ -156,7 +156,6 @@ class Game {
     }
     
     reset() {
-        const { setCurrentRound, setCurrentScore, setCurrentWinner } = this.state;
         setCurrentRound(0);
         setCurrentScore({ user: 0, opponent: 0, tie: 0});
         setCurrentWinner('');
