@@ -1,4 +1,4 @@
-import Game from '../logic/gameEngine.js';
+import Game from './gameEngine.js';
 import { RoundType, DifficultyMode, AttackType } from '@/types/GameType.js';
 import { gameState, setDifficultyModeType, setUserAttack, setRoundType } from '../store/GameStore.js';
 
@@ -53,7 +53,7 @@ function moveSelection(move: AttackType): void {
 }
 
 function isAttackType(value: string): value is AttackType {
-    return ['rock', 'paper', 'scissors', 'none'].includes(value);
+    return ['R', 'P', 'S', 'none'].includes(value);
 }
 
 function handleCardClick(event: Event): void {

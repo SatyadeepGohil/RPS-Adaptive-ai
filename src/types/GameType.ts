@@ -1,4 +1,4 @@
-export type AttackType = 'none' | 'rock' | 'paper' | 'scissors';
+export type AttackType = 'none' | 'R' | 'P' | 'S';
 
 export type DifficultyMode = 'easy' | 'medium' | 'hard' | 'extreme';
 

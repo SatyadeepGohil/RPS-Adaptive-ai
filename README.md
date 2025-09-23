@@ -52,23 +52,6 @@ Run TypeScript:
 npx tsc
 ```
 
-## ⚡️ Zustand Setup & Build Instructions
-
-> Note: Zustand is now self-hosted in this project to reduce latency.
-
-### Fix Zustand Import
-TypeScript currently fails to bundle Zustand correctly, so the library must be copied manually:
-
-- Locate the `lib` folder inside the src directory:
-
-  - Path: `src/lib/`
-
-- Copy the **entire** `lib` folder and paste it inside the `dist` directory:
-
-  - Resulting path: `dist/lib/`
-
-This ensures all Zustand-related modules are available in the build and prevents compilation/import errors.
-
 ---
 
 ## 🎯 How to Play

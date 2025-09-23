@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RPS-Prediction-ai</title>
     <style>
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            height: 100%;
+            width: 100%;
+        }
         #main_menu__button_container {
             position: absolute;
             top: 50%;
@@ -38,9 +47,6 @@
             transform: translateY(4px);
         }
     </style>
-    <link rel="preload" href="/dist/logic/fetchLib.js" as="script" crossorigin>
-    <link rel="preload" href="/dist/logic/patternsCache.js" as="script" crossorigin>
-    <link rel="preload" href="/dist/logic/trie.js" as="script" crossorigin>
 </head>
 <body>
     <div id="main_menu__background">
@@ -52,9 +58,5 @@
             <button>Quit</button>
         </div>
     </div>
-    <script type="module">
-        import fetchLib from '/dist/logic/fetchLib.js';
-        document.addEventListener('DOMContentLoaded', fetchLib);
-    </script>
 </body>
 </html>

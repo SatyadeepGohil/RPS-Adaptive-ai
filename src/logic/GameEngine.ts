@@ -43,7 +43,7 @@ class Game {
 
         if (userAttackType === 'none') return;
 
-        const choices: AttackType[] = ['rock', 'paper', 'scissors'];
+        const choices: AttackType[] = ['R', 'P', 'S'];
         let randomValue: number;
 
         if (this.isCryptoAvaliable()) {
@@ -67,7 +67,7 @@ class Game {
         console.info('Recent Moves', recentMoves);
 
         // Count occurrences
-        const counts = { rock: 0, paper: 0, scissors: 0 } as Record<AttackType, number>;
+        const counts = { R: 0, P: 0, S: 0 } as Record<AttackType, number>;
         for (const move of recentMoves) counts[move]++;
 
         // Most common move
@@ -78,14 +78,14 @@ class Game {
         // Counter the most common move
         let counterMove: AttackType;
         switch (mostCommon) {
-            case 'rock':
-                counterMove = 'paper';
+            case 'R':
+                counterMove = 'P';
                 break;
-            case 'paper':
-                counterMove = 'scissors';
+            case 'P':
+                counterMove = 'S';
                 break;
-            case 'scissors':
-                counterMove = 'rock';
+            case 'S':
+                counterMove = 'R';
                 break;
             default:
                 throw new Error(`Not Valid Move: ${mostCommon}`);
@@ -97,17 +97,17 @@ class Game {
     // Helpers
     didUserWinRound(user: AttackType, opponent: AttackType): boolean {
         return (
-            (user === 'rock' && opponent === 'scissors') ||
-            (user === 'paper' && opponent === 'rock') ||
-            (user === 'scissors' && opponent === 'paper')
+            (user === 'R' && opponent === 'S') ||
+            (user === 'P' && opponent === 'R') ||
+            (user === 'S' && opponent === 'P')
         );
     }
 
     didOpponentWinRound(user: AttackType, opponent: AttackType): boolean {
         return (
-            (opponent === 'rock' && user === 'scissors') ||
-            (opponent === 'paper' && user === 'rock') ||
-            (opponent === 'scissors' && user === 'paper')
+            (opponent === 'R' && user === 'S') ||
+            (opponent === 'P' && user === 'R') ||
+            (opponent === 'S' && user === 'P')
         );
     }
 
