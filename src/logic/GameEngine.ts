@@ -1,7 +1,5 @@
 import type { AttackType } from "../types/GameType.js";
 import { gameState, setOpponentAttack, setCurrentWinner, setCurrentRound, setCurrentScore } from "../store/GameStore.js";
-import nGrams from "./n-grams.js";
-import { patternState } from "../store/patternsStore.js";
 
 class Game {
     // State Accessor
@@ -28,8 +26,6 @@ class Game {
             case 'medium':
                 this.adaptiveAttack();
                 break;
-            case 'hard':
-                this.predictiveAttack();
         }
     }
 
@@ -96,13 +92,6 @@ class Game {
         }
         console.info('Counter Move', counterMove);
         setOpponentAttack(counterMove);
-    }
-
-    predictiveAttack() {
-        const n_grams = new nGrams(patternState.state.trie);
-        let predictiveMove = n_grams.predict();
-        console.log('Predictive Move from n grams:', predictiveMove);
-        setOpponentAttack(predictiveMove);
     }
 
     // Helpers
