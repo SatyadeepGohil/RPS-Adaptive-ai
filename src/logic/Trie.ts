@@ -10,8 +10,10 @@ class TrieNode {
 
 class Trie {
     root: TrieNode;
+    count: number;
     constructor() {
         this.root = new TrieNode();
+        this.count = 0;
     }
 
     insert(word: string) {
@@ -40,16 +42,27 @@ class Trie {
         return currentPointer.isEnd;
     }
 
-    isPrefix(prefix: string) {
+    countPatternWithPrefix(prefix: string): number {
         let currentPointer = this.root;
 
         for (let char of prefix) {
-            if (!currentPointer.children[char]) return false;
+            if (!currentPointer.children[char]) return 0;
 
             currentPointer = currentPointer.children[char];
         }
 
-        return true;
+        return this.countEndNodes(currentPointer);
+    }
+
+    private countEndNodes(node: TrieNode): number {
+        this.count = 0;
+        if (node.isEnd) this.count++;
+
+        for (let child of Object.values(node.children)) {
+            this.count += this.countEndNodes(child);
+        }
+
+        return this.count;
     }
 }
 

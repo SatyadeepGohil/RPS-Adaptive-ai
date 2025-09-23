@@ -1,4 +1,5 @@
-import { setPatternLibrary,} from "./patternsCache.js";
+import { patternState, setMap, setPatternLibrary, setTrie } from "../store/patternsStore.js";
+
 async function fetchLib() {
     let patterns = [];
     if (!window.Worker) {
@@ -7,6 +8,8 @@ async function fetchLib() {
             if (!response.ok) throw new Error('Network response was not ok');
             patterns = await response.json()
             setPatternLibrary(patterns);
+            setTrie(patterns);
+            setMap(patterns);
         } catch (error) {
             console.error('Failed to fetch patterns:', error);
             setPatternLibrary([]);
@@ -19,6 +22,9 @@ async function fetchLib() {
         worker.onmessage = (e) => {
             console.log('Main: message received from worker', e.data);
             setPatternLibrary(e.data.patterns);
+            setTrie(e.data.patterns);
+            setMap(e.data.patterns);
+            console.log(patternState.state.trie);
         }
     }
 }

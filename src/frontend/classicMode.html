@@ -182,10 +182,12 @@
             filter: grayscale(1) brightness(1);
         }
     </style>
-    <link rel="preload" href="/dist/store/GameStore.js" as="script" crossorigin>
-    <link rel="preload" href="/dist/logic/gameEngine.js" as="script" crossorigin>
-    <link rel="preload" href="/dist/logic/stateManager.js" as="script" crossorigin>
-    <link rel="preload" href="/dist/logic/classicMode.js" as="script" crossorigin>
+    <link rel="modulepreload" href="/dist/logic/fetchLib.js" as="script" crossorigin>
+    <link rel="modulepreload" href="/dist/store/patternsStore.js" as="script" crossorigin>
+    <link rel="modulepreload" href="/dist/logic/trie.js" as="script" crossorigin>
+    <link rel="modulepreload" href="/dist/logic/stateManager.js" as="script" crossorigin>
+    <link rel="modulepreload" href="/dist/store/GameStore.js" as="script" crossorigin>
+    <link rel="modulepreload" href="/dist/logic/gameEngine.js" as="script" crossorigin>
 </head>
 <body>
     <div id="classic_mode_container">
@@ -218,11 +220,15 @@
         </div>
         <hr />
         <div id="selection_card_container">
-            <div class="card" data-attack="rock">Rock</div>    
-            <div class="card" data-attack="paper">Paper</div>
-            <div class="card" data-attack="scissors">Scissors</div>    
+            <div class="card" data-attack="R">Rock</div>    
+            <div class="card" data-attack="P">Paper</div>
+            <div class="card" data-attack="S">Scissors</div>    
         </div>
     </div>
+    <script type="module">
+        import fetchLib from '/dist/logic/fetchLib.js';
+        document.addEventListener('DOMContentLoaded', fetchLib);
+    </script>
     <script type="module" src="/dist/logic/classicMode.js"></script>
 </body>
 </html>
