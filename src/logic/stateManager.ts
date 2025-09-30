@@ -17,27 +17,7 @@ class State<T extends Record<string, any>> {
             this.state[prop] = value;
 
             this.observers.forEach(({observer, dependencies}) => {
-                if (dependencies.has(prop)) {
-                    observer(this.state);
-                }
-            });
-        }
-    }
-
-    setStates(partial: Partial<T>) {
-        let changed = false;
-        for(const key in partial) {
-            if (partial[key] !== this.state[key]) {
-                (this.state as any)[key] = partial[key];
-                changed = true;
-            }
-        }
-
-        if (changed) {
-            this.observers.forEach(({ observer, dependencies }) => {
-                if ([...dependencies].some((dep) => dep in partial)) {
-                    observer(this.state);
-                }
+                observer(this.state);
             });
         }
     }

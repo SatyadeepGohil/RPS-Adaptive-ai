@@ -1,6 +1,6 @@
 import Game from './gameEngine.js';
-import { RoundType, DifficultyMode, AttackType } from '@/types/GameType.js';
-import { gameState, setDifficultyModeType, setUserAttack, setRoundType } from '../store/GameStore.js';
+import { RoundType, DifficultyMode, AttackType } from '@/types/gameType.js';
+import { gameState, setDifficultyModeType, setUserAttack, setRoundType } from '../store/gameStore.js';
 
 // Initialization
 const game = new Game();

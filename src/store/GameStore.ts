@@ -1,6 +1,5 @@
-import { GameData } from "@/types/GameType";
+import { GameData, RoundType, AttackType,DifficultyMode, Round, Score, Winner  } from "@/types/gameType.js";
 import State from "../logic/stateManager.js";
-import { AttackType, DifficultyMode, Round, RoundType, Score, Winner } from "@/types/GameType";
 
 export const gameState = new State<GameData>({
   userAttackType: 'none',
@@ -14,10 +13,9 @@ export const gameState = new State<GameData>({
 });
 
 export function setUserAttack(attack: AttackType) {
-    gameState.setStates({
-        userAttackType: attack,
-        attackHistory: [...gameState.state.attackHistory, attack].slice(-20),
-    })
+    let history = [...gameState.state.attackHistory, attack].slice(-20);
+    gameState.setState('userAttackType', attack);
+    gameState.setState('attackHistory', history);
 }
 
 export function setOpponentAttack(attack: AttackType) {
@@ -25,21 +23,17 @@ export function setOpponentAttack(attack: AttackType) {
 }
 
 export function setDifficultyModeType(mode: DifficultyMode) {
-    gameState.setStates({
-        difficultModeType: mode,
-        currentRound: 0,
-        currentScore: { user: 0, opponent: 0, tie: 0 },
-        currentWinner: '',
-    })
+   gameState.setState('difficultModeType', mode);
+   gameState.setState('currentRound', 0);
+   gameState.setState('currentScore', {user: 0, opponent: 0, tie: 0 });
+   gameState.setState('currentWinner', '');
 }
 
 export function setRoundType(rType: RoundType) {
-    gameState.setStates({
-        roundType: rType,
-        currentRound: 0,
-        currentScore: { user: 0, opponent: 0, tie: 0 },
-        currentWinner: '',
-    })
+    gameState.setState('roundType', rType);
+    gameState.setState('currentRound', 0);
+    gameState.setState('currentScore', {user: 0, opponent: 0, tie: 0 });
+    gameState.setState('currentWinner', '');
 }
 
 export function setCurrentRound(round: Round) {

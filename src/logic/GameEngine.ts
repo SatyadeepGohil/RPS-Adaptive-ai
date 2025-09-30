@@ -1,5 +1,5 @@
-import type { AttackType } from "../types/GameType.js";
-import { gameState, setOpponentAttack, setCurrentWinner, setCurrentRound, setCurrentScore } from "../store/GameStore.js";
+import type { AttackType } from "../types/gameType.js";
+import { gameState, setOpponentAttack, setCurrentWinner, setCurrentRound, setCurrentScore } from "../store/gameStore.js";
 
 class Game {
     // State Accessor
@@ -64,37 +64,61 @@ class Game {
 
         if (attackHistory.length < 5) return this.randomAttack();
         const recentMoves = attackHistory.slice(-6, -1);
+        const lastMove = recentMoves[recentMoves.length - 1];
         console.info('Recent Moves', recentMoves);
+
+        let streakCount = 1;
+        for (let i = recentMoves.length; i >= 0; i--) {
+            if (recentMoves[i] === lastMove) {
+                streakCount++;
+            } else {
+                break;
+            }
+        }
+
+        console.info('Last Move:', lastMove, 'Streak:', streakCount);
 
         // Count occurrences
         const counts = { R: 0, P: 0, S: 0 } as Record<AttackType, number>;
         for (const move of recentMoves) counts[move]++;
 
+        // Apply weights to recent and common move
+        /* interface weightType {
+            rW: number,
+            pW: number,
+            sW: number
+        }
+
+        const weights: weightType = {rW: 0, pW: 0, sW: 0}; */
+
+        // Ways to weight the moves: Recent two or three identical moves get higher weight then curruent common move
+
         // Most common move
         const mostCommon = Object.entries(counts).reduce((a, b) =>
             b[1] > a[1] ? b : a
         )[0] as AttackType;
-
+        console.info('Most Common Move:', mostCommon);
+        let currentCounterMove = this.counterMove(mostCommon);
         // Counter the most common move
-        let counterMove: AttackType;
-        switch (mostCommon) {
-            case 'R':
-                counterMove = 'P';
-                break;
-            case 'P':
-                counterMove = 'S';
-                break;
-            case 'S':
-                counterMove = 'R';
-                break;
-            default:
-                throw new Error(`Not Valid Move: ${mostCommon}`);
-        }
-        console.info('Counter Move', counterMove);
-        setOpponentAttack(counterMove);
+        
+        console.info('Counter Move', currentCounterMove);
+        setOpponentAttack(currentCounterMove);
     }
 
     // Helpers
+    counterMove(move: AttackType): AttackType {
+        switch (move) {
+            case 'R':
+               return 'P';
+            case 'P':
+                return 'S';
+            case 'S':
+                return 'R';
+            default:
+                throw new Error(`Not Valid Move: ${move}`);
+        }
+    }
+    
     didUserWinRound(user: AttackType, opponent: AttackType): boolean {
         return (
             (user === 'R' && opponent === 'S') ||
