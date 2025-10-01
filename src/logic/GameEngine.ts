@@ -4,7 +4,7 @@ import { gameState, setOpponentAttack, setCurrentWinner, setCurrentRound, setCur
 class Game {
     // State Accessor
     private get state() {
-        return gameState.state;
+        return gameState.getAllState();
     }
 
     // Main Entry Point

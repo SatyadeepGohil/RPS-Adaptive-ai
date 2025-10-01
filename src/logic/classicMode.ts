@@ -37,6 +37,7 @@ function toggleDifficultyType(): void {
     const modeString = modeType[index.difficultyModeIndex];
     setDifficultyModeType(modeString as DifficultyMode);
     DifficultyBtn.innerText = `Difficulty Mode: ${modeString}`;
+    updateStatus();
 }
 
 function toggleRoundType(): void {
@@ -79,7 +80,7 @@ function toggleClass(el: HTMLElement, className: string, toggler: boolean): void
 }
 
 function winnerModalUpdate(): void {
-    const { currentScore } = gameState.state;
+    const { currentScore } = gameState.getAllState();
     let winnerChecker;
 
     if (currentScore.user === currentScore.opponent) winnerChecker = 'TIE!';
@@ -102,7 +103,7 @@ function handlePlayAgain() {
 }
 
 function updateStatus(): void {
-    const { currentScore, currentRound } = gameState.state;
+    const { currentScore, currentRound } = gameState.getAllState();
     roundCount.innerText    = `Current Round: ${currentRound}`;
     userScore.innerText     = `User: ${currentScore.user}`;
     tieCount.innerText      = `Tie: ${currentScore.tie}`;
@@ -111,7 +112,7 @@ function updateStatus(): void {
 
 // Flip animation to reveal opponent's attack
 function showOpponentAttack(): void {
-    const { opponentAttackType } = gameState.state;
+    const { opponentAttackType } = gameState.getAllState();
     front.innerText = opponentAttackType;
 
     flipper.classList.add('active');

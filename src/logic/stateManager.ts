@@ -1,42 +1,31 @@
-type Observer<T> = {
-    observer: (state: T) => void;
-    dependencies: Set<keyof T>;
-};
-
 class State<T extends Record<string, any>> {
-    state: T;
-    observers: Observer<T>[];
+    private state: T;
 
     constructor(initialState: T) {
         this.state = initialState;
-        this.observers = [];
+    }
+
+    getState<K extends keyof T>(prop: K): T[K] {
+        return this.state[prop];
+    }
+
+    getAllState(): Readonly<T> {
+        return this.state;
     }
 
     setState<K extends keyof T>(prop: K, value: T[K]) {
-        if (prop in this.state && this.state[prop] !== value) {
+        if (this.state[prop] !== value) {
             this.state[prop] = value;
-
-            this.observers.forEach(({observer, dependencies}) => {
-                observer(this.state);
-            });
         }
     }
 
-    observe(observer: (proxy: T) => void) {
-        const dependencies = new Set<keyof T>();
-
-        const proxy = new Proxy(this.state, {
-            get: (target, prop: string) => {
-                if (typeof prop === 'string' && prop in target) {
-                    dependencies.add(prop as keyof T);
-                }
-                return target[prop];
-            },
-        });
-
-        observer(proxy as T);
-        this.observers.push({ observer, dependencies });
+    batchSetState(updates: Partial<T>): void {
+        this.state = {...this.state, ...updates};
     }
-}
+
+    replaceState(newState: T): void {
+        this.state = newState;
+    }
+ }
 
 export default State;

@@ -13,9 +13,11 @@ export const gameState = new State<GameData>({
 });
 
 export function setUserAttack(attack: AttackType) {
-    let history = [...gameState.state.attackHistory, attack].slice(-20);
-    gameState.setState('userAttackType', attack);
-    gameState.setState('attackHistory', history);
+    let history = [...gameState.getState('attackHistory'), attack].slice(-20);
+    gameState.batchSetState({
+        userAttackType: attack,
+        attackHistory: history,
+    })
 }
 
 export function setOpponentAttack(attack: AttackType) {
@@ -23,17 +25,21 @@ export function setOpponentAttack(attack: AttackType) {
 }
 
 export function setDifficultyModeType(mode: DifficultyMode) {
-   gameState.setState('difficultModeType', mode);
-   gameState.setState('currentRound', 0);
-   gameState.setState('currentScore', {user: 0, opponent: 0, tie: 0 });
-   gameState.setState('currentWinner', '');
+    gameState.batchSetState({
+        difficultModeType: mode,
+        currentRound: 0,
+        currentScore: { user: 0, opponent: 0, tie: 0 },
+        currentWinner: '',
+    });
 }
 
 export function setRoundType(rType: RoundType) {
-    gameState.setState('roundType', rType);
-    gameState.setState('currentRound', 0);
-    gameState.setState('currentScore', {user: 0, opponent: 0, tie: 0 });
-    gameState.setState('currentWinner', '');
+    gameState.batchSetState({
+        roundType: rType,
+        currentRound: 0,
+        currentScore: { user: 0, opponent: 0, tie: 0 },
+        currentWinner: '',
+    });
 }
 
 export function setCurrentRound(round: Round) {
