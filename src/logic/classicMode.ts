@@ -110,10 +110,18 @@ function updateStatus(): void {
     opponentScore.innerText = `Opponent: ${currentScore.opponent}`;
 }
 
+function abbrevationToWords(attack: AttackType): string {
+
+    if (attack === 'R') return 'Rock';
+    if (attack === 'P') return 'Paper';
+    if (attack === 'S') return 'Scissors';
+    else return '';
+}
+
 // Flip animation to reveal opponent's attack
 function showOpponentAttack(): void {
     const { opponentAttackType } = gameState.getAllState();
-    front.innerText = opponentAttackType;
+    front.innerHTML = abbrevationToWords(opponentAttackType);
 
     flipper.classList.add('active');
     isAnimating = true;
